@@ -1,14 +1,29 @@
 import express from 'express';
-
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+import cors from 'cors';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { errorMiddleware } from '../../../packages/error-handler/error-middleware';
 
 const app = express();
+
+app.use(
+  cors({
+    origin: ['http://localhost:3000'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  })
+);
+
+app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
   res.send({ message: 'Hello API' });
 });
 
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
+const port = process.env.PORT || 6001;
+const server = app.listen(port, () => {
+  console.log(`=> Auth Service listening at http://localhost:${port}/api`);
+});
+
+server.on('error', (error) => {
+  console.error(`Error occurred: ${error.message}`);
 });
