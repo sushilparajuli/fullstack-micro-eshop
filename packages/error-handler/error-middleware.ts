@@ -9,18 +9,18 @@ export const errorMiddleware = (
 ) => {
   if (err instanceof AppError) {
     console.error(`Error ${req.method} ${req.url} = ${err.message}`);
-
-    res.status(err.statusCode).json({
-      status: 'error',
-      message: err.message,
-      ...(err.details && { details: err.details }),
-    });
-    next();
+    next(
+      res.status(err.statusCode).json({
+        status: 'error',
+        message: err.message,
+        ...(err.details && { details: err.details }),
+      })
+    );
   }
 
-  console.error(`Unexpected Error ${req.method} ${req.url} = ${err.message}`);
-  res.status(500).json({
-    error: 'Something went wrong, please try again later!',
-  });
-  next();
+  next(
+    res.status(500).json({
+      error: 'Something went wrong, please try again later!',
+    })
+  );
 };
