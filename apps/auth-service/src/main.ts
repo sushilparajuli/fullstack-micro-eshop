@@ -1,10 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { errorMiddleware } from '../../../packages/error-handler/error-middleware';
+import { errorMiddleware } from '@packages/error-handler/error-middleware';
 import router from './routes/auth.router';
-//import swaggerUi from 'swagger-ui-express';
-// import swaggerDocument from './swagger-output.json';
+import swaggerUi from 'swagger-ui-express';
+import cookieParser from 'cookie-parser';
+const swaggerDocument = require('./swagger-output.json');
 
 const app = express();
 
@@ -16,18 +17,22 @@ app.use(
   })
 );
 
-// api docs
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-// app.get('/docs-json', (req, res) => {
-//   res.setHeader('Content-Type', 'application/json');
-//   res.send(swaggerDocument);
-// });
-
-// Routers
-app.use('/api', router);
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+app.use(cookieParser());
 
 // Error Middleware
 app.use(errorMiddleware);
+
+//api docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/docs-json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerDocument);
+});
+
+// Routers
+app.use('/api', router);
 
 app.get('/', (req, res) => {
   res.send({ message: 'Hello API' });

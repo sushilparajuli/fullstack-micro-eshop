@@ -1,5 +1,5 @@
 // https://www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
-import { PrismaClient } from '../generated/client';
+import { PrismaClient } from '@prisma/client';
 
 // declare global {
 //   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -15,8 +15,13 @@ import { PrismaClient } from '../generated/client';
 
 // export default prisma;
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+// const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+export const prisma = new PrismaClient({
+  log:
+    process.env.NODE_ENV === 'development'
+      ? ['query', 'info', 'warn', 'error']
+      : ['error'],
+});
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+// if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

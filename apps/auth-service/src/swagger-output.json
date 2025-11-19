@@ -7,11 +7,9 @@
   },
   "host": "localhost:6001",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
-    "/user-registration": {
+    "api/user-registration": {
       "post": {
         "description": "",
         "parameters": [
@@ -22,10 +20,13 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "any"
+                  "example": "user@mail.com"
                 },
                 "name": {
-                  "example": "any"
+                  "example": "your name"
+                },
+                "password": {
+                  "example": "your password"
                 }
               }
             }
@@ -40,7 +41,5 @@
     }
   },
   "version": "1.0.0",
-  "schemas": [
-    "http"
-  ]
+  "schemas": ["http"]
 }

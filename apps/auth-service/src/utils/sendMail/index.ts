@@ -21,6 +21,7 @@ const renderEmailTemplate = async (
 ): Promise<string> => {
   const templatePath = path.join(
     process.cwd(),
+    'apps',
     'auth-service',
     'src',
     'utils',
@@ -41,11 +42,13 @@ export const sendMail = async (
   try {
     const htmlContent = await renderEmailTemplate(templateName, templateData);
     const mailOptions = {
-      from: `${process.env.SMTP_FROM_EMAIL}`,
+      from: 'sushilparajuli2023@gmail.com',
       to,
       subject,
       html: htmlContent,
     };
+
+    console.log(mailOptions, 'mailOPtions');
 
     await transporter.sendMail(mailOptions);
     return true;

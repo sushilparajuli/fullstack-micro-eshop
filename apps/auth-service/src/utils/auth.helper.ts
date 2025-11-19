@@ -1,9 +1,6 @@
 import crypto from 'crypto';
-
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { ValidationError } from '../../../../packages/error-handler';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import redis from '../../../../packages/database/redis';
+import { ValidationError } from '@packages/error-handler';
+import redis from '@packages/database/redis';
 import { sendMail } from './sendMail';
 import { NextFunction } from 'express';
 
@@ -14,7 +11,6 @@ export const validateRegistrationData = (
   userType: 'user' | 'seller'
 ) => {
   const { name, email, password, phone_number, country } = data;
-
   if (
     !name ||
     !email ||

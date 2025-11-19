@@ -1,5 +1,4 @@
 // register a new user
-
 import { NextFunction, Request, Response } from 'express';
 import {
   checkOtpRestrictions,
@@ -8,10 +7,9 @@ import {
   validateRegistrationData,
 } from '../utils/auth.helper.js';
 
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { ValidationError } from '../../../../packages/error-handler';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { prisma } from '../../../../packages/database/prisma';
+import { ValidationError } from '@packages/error-handler';
+
+import { prisma } from '@packages/database/prisma';
 
 export const userRegister = async (
   req: Request,
@@ -31,7 +29,7 @@ export const userRegister = async (
 
     await checkOtpRestrictions(email, next);
     await trackOtpRequest(email, next);
-    await sentOtp(email, name, 'user-activation-mail');
+    await sentOtp(name, email, 'user-activation-mail');
 
     return next(
       res.status(200).json({
